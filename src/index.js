@@ -1,13 +1,24 @@
-import sum from './math';
-import './image';
-
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import App from './components/App/App';
+import { createStore, applyMiddleware } from 'redux';
+import appReducers from './reducers/index';
+import { Provider } from 'react-redux';
+import { thunk } from 'redux-thunk';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'font-awesome/css/font-awesome.min.css';
+import $ from 'jquery';
 
-const total = sum(1, 2);
-
-console.log(total);
-document.write(total);
+const store = createStore(
+    appReducers,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    applyMiddleware(thunk)
+);
 
 const root = createRoot(document.getElementById('root'));
-root.render(<h1>Hello React</h1>);
+root.render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
