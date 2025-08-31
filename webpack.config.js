@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const VENDOR_LIBS = [
     'bootstrap',
@@ -21,7 +22,26 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: '[name].js',
+        filename: '[name].[contenthash].js',
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                nodeModules: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'nodeModules',
+                    chunks: 'all',
+                    priority: 10
+                },
+                common: {
+                    name: 'common',
+                    minChunks: 2,
+                    chunks: 'all',
+                    priority: 5
+                }
+            }
+        }
     },
     module: {
         rules: [
@@ -41,14 +61,22 @@ const config = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'styles.css'
+            filename: '[name].css'
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
             'window.$': 'jquery',
-        })
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: 'index.html',
+            inject: true
+        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     names: ['vendor', 'manifest']
+        // })
     ]
 };
 
