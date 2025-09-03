@@ -6,7 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf build dist",
-    "build": "npm run clean && webpack"
+    "build": "npm run clean && webpack",
+    "build:prod": "npm run clean && webpack --config webpack.prod.config.js",
+    "serve": "webpack-dev-server --open --mode development",
+    "serve:prod": "webpack-dev-server --config webpack.prod.config.js --open",
+    "analyze": "npm run build:prod && webpack-bundle-analyzer dist",
+    "bundle-report": "webpack --config webpack.prod.config.js --profile --json > stats.json && webpack-bundle-analyzer stats.json"
   },
   "author": "",
   "license": "ISC",

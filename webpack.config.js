@@ -24,6 +24,22 @@ const config = {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].[contenthash].js',
     },
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'build'),
+        },
+        port: 3000,
+        hot: true,
+        open: true,
+        historyApiFallback: true,
+        compress: true,
+        client: {
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        },
+    },
     optimization: {
         splitChunks: {
             chunks: 'all',
